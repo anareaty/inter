@@ -895,9 +895,8 @@ export default class InterPlugin extends Plugin {
             let propName = cell.getAttribute("data-prop") || ""
             let path = cell.getAttribute("data-path") || ""
             let file = this.app.vault.getAbstractFileByPath(path) 
-            if (!(file instanceof TFile)) return
-
-            if (type == "text" || type == "multitext" || propName == "file.link" || propName == "file.name") {
+            if (file instanceof TFile) {
+                if (type == "text" || type == "multitext" || propName == "file.link" || propName == "file.name") {
 
                 cell.addEventListener("contextmenu", (e) => {
                     this.cellEditMenu(e, cell)
@@ -923,42 +922,43 @@ export default class InterPlugin extends Plugin {
                         if (file instanceof TFile) leaf.openFile(file)
                     }
                 }
-            }
-            
-            if (propName == "file.tasks") {
-                let taskCheckboxes = cell.querySelectorAll(".div-task-list-clickable-checkbox")
-                for (let taskCheckbox of taskCheckboxes) {
-                    if (taskCheckbox instanceof HTMLInputElement) {
-                        taskCheckbox.onclick = () => {
-                            this.processTaskCheckbox(taskCheckbox, file)
-                        }
-                    }  
                 }
-            }
-
-            if (propName.startsWith("file.")) continue
-
-            if (type == "number") {
-                this.editCellNumber(cell, propName, file) 
-            }
-
-            if (type == "date" || type == "datetime") {
-                let dateInput = cell.querySelector("input")
-                if (dateInput) {
-                    dateInput.onchange = (e) => {
-                        if (e.target instanceof HTMLInputElement) {
-                            this.savePropertyValue(file, propName, e.target.value)  
+                
+                if (propName == "file.tasks") {
+                    let taskCheckboxes = cell.querySelectorAll(".div-task-list-clickable-checkbox")
+                    for (let taskCheckbox of taskCheckboxes) {
+                        if (taskCheckbox instanceof HTMLInputElement) {
+                            taskCheckbox.onclick = () => {
+                                this.processTaskCheckbox(taskCheckbox, file)
+                            }
                         }  
                     }
                 }
-            }
 
-            if (type == "checkbox") {
-                let checkbox = cell.querySelector("input")
-                if (checkbox instanceof HTMLInputElement) {
-                    checkbox.addEventListener("click", () => {
-                        this.savePropertyValue(file, propName, checkbox.checked)
-                    })
+                if (propName.startsWith("file.")) continue
+
+                if (type == "number") {
+                    this.editCellNumber(cell, propName, file) 
+                }
+
+                if (type == "date" || type == "datetime") {
+                    let dateInput = cell.querySelector("input")
+                    if (dateInput) {
+                        dateInput.onchange = (e) => {
+                            if (e.target instanceof HTMLInputElement) {
+                                this.savePropertyValue(file, propName, e.target.value)  
+                            }  
+                        }
+                    }
+                }
+
+                if (type == "checkbox") {
+                    let checkbox = cell.querySelector("input")
+                    if (checkbox instanceof HTMLInputElement) {
+                        checkbox.addEventListener("click", () => {
+                            if (checkbox) this.savePropertyValue(file, propName, checkbox.checked)
+                        })
+                    }
                 }
             }
         }
@@ -1228,7 +1228,7 @@ export default class InterPlugin extends Plugin {
             }
 
             numberInput.onfocus = () => {
-                if (inputWrapper != null) inputWrapper.classList.add("focused")
+                if (inputWrapper) inputWrapper.classList.add("focused")
                 document.addEventListener("click", handleClickOutside)
             }
 
@@ -1242,7 +1242,7 @@ export default class InterPlugin extends Plugin {
             if (plusButton instanceof HTMLButtonElement) {
                 plusButton.onclick = () => {
                     if (numberInput) numberInput.value = (Number(numberInput.value) + 1).toString()
-                    inputWrapper.classList.add("focused")
+                    if (inputWrapper) inputWrapper.classList.add("focused")
                     document.addEventListener("click", handleClickOutside)
                 }
             }
@@ -1251,7 +1251,7 @@ export default class InterPlugin extends Plugin {
             if (minusButton instanceof HTMLButtonElement) {
                 minusButton.onclick = () => {
                     if (numberInput) numberInput.value = (Number(numberInput.value) - 1).toString()
-                    inputWrapper.classList.add("focused")
+                    if (inputWrapper) inputWrapper.classList.add("focused")
                     document.addEventListener("click", handleClickOutside)
                 }
             }
