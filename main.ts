@@ -929,7 +929,7 @@ export default class InterPlugin extends Plugin {
                     for (let taskCheckbox of taskCheckboxes) {
                         if (taskCheckbox instanceof HTMLInputElement) {
                             taskCheckbox.onclick = () => {
-                                this.processTaskCheckbox(taskCheckbox, file)
+                                if (taskCheckbox instanceof HTMLInputElement) this.processTaskCheckbox(taskCheckbox, file)
                             }
                         }  
                     }
@@ -945,7 +945,7 @@ export default class InterPlugin extends Plugin {
                     let dateInput = cell.querySelector("input")
                     if (dateInput) {
                         dateInput.onchange = (e) => {
-                            if (e.target instanceof HTMLInputElement) {
+                            if (e.target instanceof HTMLInputElement && file instanceof TFile) {
                                 this.savePropertyValue(file, propName, e.target.value)  
                             }  
                         }
@@ -956,7 +956,7 @@ export default class InterPlugin extends Plugin {
                     let checkbox = cell.querySelector("input")
                     if (checkbox instanceof HTMLInputElement) {
                         checkbox.addEventListener("click", () => {
-                            if (checkbox) this.savePropertyValue(file, propName, checkbox.checked)
+                            if (checkbox && file instanceof TFile) this.savePropertyValue(file, propName, checkbox.checked)
                         })
                     }
                 }
