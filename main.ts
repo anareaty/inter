@@ -929,7 +929,7 @@ export default class InterPlugin extends Plugin {
                     for (let taskCheckbox of taskCheckboxes) {
                         if (taskCheckbox instanceof HTMLInputElement) {
                             taskCheckbox.onclick = () => {
-                                if (taskCheckbox instanceof HTMLInputElement) this.processTaskCheckbox(taskCheckbox, file)
+                                if (taskCheckbox instanceof HTMLInputElement && file instanceof TFile) this.processTaskCheckbox(taskCheckbox, file)
                             }
                         }  
                     }
