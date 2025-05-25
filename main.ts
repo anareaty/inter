@@ -955,7 +955,7 @@ export default class InterPlugin extends Plugin {
 
             if (type == "checkbox") {
                 let checkbox = cell.querySelector("input")
-                if (checkbox) {
+                if (checkbox instanceof HTMLInputElement) {
                     checkbox.addEventListener("click", () => {
                         this.savePropertyValue(file, propName, checkbox.checked)
                     })
@@ -1228,7 +1228,7 @@ export default class InterPlugin extends Plugin {
             }
 
             numberInput.onfocus = () => {
-                inputWrapper.classList.add("focused")
+                if (inputWrapper != null) inputWrapper.classList.add("focused")
                 document.addEventListener("click", handleClickOutside)
             }
 
@@ -2998,7 +2998,7 @@ export default class InterPlugin extends Plugin {
                 }
                 
                 let week = await this.selectSuggester("Неделя", weekValues, weekNames, moment().day(1).format("YYYY[W]WW"))
-                if (week) {
+                if (week && typeof week == "string") {
                     startDate = moment(week).format("YYYY-MM-DD")
                     endDate = moment(week).day(7).format("YYYY-MM-DD")
                 }
@@ -3039,7 +3039,7 @@ export default class InterPlugin extends Plugin {
                 }
                 
                 let month = await this.selectSuggester("Месяц", monthValues, monthNames, moment().startOf("month").format("YYYY-M"))
-                if (month) {
+                if (month && typeof month == "string") {
                     startDate = moment(month, "YYYY-M").format("YYYY-MM-DD")
                     endDate = moment(month, "YYYY-M").endOf("month").format("YYYY-MM-DD")
                 }
@@ -3073,7 +3073,7 @@ export default class InterPlugin extends Plugin {
                 }
                 
                 let year = await this.selectSuggester("Год", yearValues, yearValues, currentYear.toString())
-                if (year) {
+                if (year && typeof year == "string") {
                     startDate = moment(year, "YYYY").format("YYYY-MM-DD")
                     endDate = moment(year, "YYYY").endOf("year").format("YYYY-MM-DD") 
                 }
